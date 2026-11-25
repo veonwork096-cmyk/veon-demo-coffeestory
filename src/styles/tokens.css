@@ -1,0 +1,54 @@
+/* Hallmark · shape: stage hero + tabbed lineup + index + timeline · genre: playful · theme: custom · job: buy · idea: "Кава з героями: кожен персонаж пачки — це спосіб заварювання, тож відвідувач обирає свого героя — Лиса для еспресо, Ведмедя для фільтра чи Шефа" · vibe: "плакатна бірюзова сцена, яскраві пачки-герої" */
+/* paper: #EEF3F1 · accent: #F2802E · display: Dela Gothic One · body: Sofia Sans · hero: три пачки-персонажі стоять на нижньому краю бірюзової сцени під великим H1, дві дії · nav: світла липка шапка 64 px, 5 пунктів + телефон; на 390 бургер / логотип / трубка · footer: бірюзове поле, логотип на плашці, 2 стовпчики, міста · imagery: the product · signature: троє героїв пачок на бірюзовій сцені і вибір своєї кави за героєм */
+/* axes: paper/display/accent · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: E (екзекуція шкал смаку), значень кислинки/гірчинки немає в client.json — показуємо нотки смаку з пачок замість вигаданих шкал */
+/* Hallmark · waive 59 · [1440px] gap of 40px between the hero and the facts strip · the hero packs overlap the delivery facts strip by 48px on purpose, the cast steps out of the stage onto the strip as concept.md describes */
+/* Hallmark · waive 49b · [320px] the big contact phone wraps after the area code into two nowrap halves · at 320px the display-size number cannot fit one line, the split keeps each half whole and readable */
+/* Hallmark · waive 44c · [1440px] hero ends at 1063px, the packs cross the 900px fold · concept.md places the three packs on the bottom edge of the stage with their feet stepping onto the facts strip; H1, sentence and both actions sit above y 544 so the job of the first screen is met */
+/* Client design tokens: only from design/concept.md (veon-concept: colors, fonts). */
+:root {
+  /* palette (concept.md §5, Дизайн-система) */
+  --field: #084A49;
+  --paper: #EEF3F1;
+  --well: #D5E2DE;
+  --ink: #1C1714;
+  --muted: #4F5C59;
+  --link: #0B5C5B;
+  --accent: #F2802E;
+  --accent-hover: color-mix(in oklab, var(--accent) 86%, var(--ink));
+
+  /* roles (names of the demo base) */
+  --color-bg: var(--paper);
+  --color-text: var(--ink);
+  --color-accent: var(--accent);
+  --focus: var(--link);
+
+  --font-display: "Dela Gothic One", "Arial Black", system-ui, sans-serif;
+  --font-body: "Sofia Sans", system-ui, sans-serif;
+
+  /* type scale ~1.25 */
+  --fs-h1: clamp(2.5rem, 1.4rem + 4.6vw, 5.25rem);
+  --fs-h2: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+  --fs-index: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+  --fs-h3: 1.5rem;
+  --fs-lead: clamp(1.125rem, 1rem + .4vw, 1.3125rem);
+  --fs-body: 1.0625rem;
+  --fs-small: .9375rem;
+
+  /* spacing, 4/8 steps */
+  --s-1: .5rem; --s-2: .75rem; --s-3: 1rem; --s-4: 1.5rem; --s-5: 2.5rem; --s-6: 4rem; --s-7: 6rem; --s-8: 9rem;
+  --space: clamp(16px, 5vw, 80px);
+  --gap: clamp(16px, 1rem + .6vw, 24px);
+  --container: 1360px;
+  --header-h: 64px;
+
+  --radius: 6px;
+  --radius-pill: 999px;
+  --border: 2px;
+
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --t-fast: 120ms;
+  --t-mid: 220ms;
+  --t-tab: 320ms;
+  --dur: 600ms;
+}

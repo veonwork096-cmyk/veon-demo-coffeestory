@@ -1,0 +1,58 @@
+---
+import { Image } from "astro:assets";
+import FutureLink from "./FutureLink.astro";
+import logo from "../assets/logo.png";
+import { cities, soon } from "../data/site";
+
+const buyers = ["Оплата і доставка", "Обмін і повернення", "Питання й відповіді", "Статті"];
+const company = ["Про нас", "Співпраця"];
+---
+<footer class="site-footer on-field">
+  <div class="container grid">
+    <a class="plate" href="#top" aria-label="Coffee-Story — на початок сторінки">
+      <Image src={logo} alt="Coffee-Story" width={200} height={58} format="webp" densities={[1, 2]} loading="lazy" />
+    </a>
+
+    <nav class="cols" aria-label="Розділи сайту">
+      <div>
+        <p class="col-title">Покупцям</p>
+        <ul>{buyers.map((b) => <li><FutureLink note={soon}>{b}</FutureLink></li>)}</ul>
+      </div>
+      <div>
+        <p class="col-title">Компанія</p>
+        <ul>{company.map((c) => <li><FutureLink note={soon}>{c}</FutureLink></li>)}<li><a class="anchor" href="#kontakty">Контакти</a></li></ul>
+      </div>
+    </nav>
+
+
+    <div class="cities">
+      <p class="col-title">Доставляємо по всій Україні, зокрема:</p>
+      <ul>{cities.map((c) => <li><FutureLink note={soon}>{c}</FutureLink></li>)}</ul>
+    </div>
+
+    <p class="copy">Coffee-Story — кава власного обсмаження, Дніпро</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { border-top: 1px solid color-mix(in oklab, var(--paper) 30%, transparent); padding-block: var(--s-5) var(--s-4); }
+  .grid { display: grid; gap: var(--s-5); }
+  .plate { justify-self: start; align-self: start; display: inline-block; background: var(--paper); border-radius: var(--radius); padding: var(--s-2) var(--s-3); }
+  .plate :global(img) { height: 48px; width: auto; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+  .col-title { color: var(--well); font-size: var(--fs-small); margin-bottom: var(--s-2); }
+  li :global(.future-link) { min-height: 44px; }
+  .cols li :global(.future-link) { text-decoration-color: transparent; font-weight: 600; }
+  .cols li :global(.future-link:hover), .cols li :global(.future-link:focus-visible) { text-decoration-color: currentColor; }
+  .anchor { min-height: 44px; display: inline-flex; align-items: center; color: var(--paper); font-weight: 600; text-decoration: none; }
+  .anchor:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .2em; }
+  .cities ul { display: flex; flex-wrap: wrap; column-gap: var(--s-4); }
+  .copy { max-width: none; font-size: var(--fs-small); color: var(--well); padding-top: var(--s-4); border-top: 1px solid color-mix(in oklab, var(--paper) 30%, transparent); }
+
+  @media (min-width: 1024px) {
+    .grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
+    .plate { grid-column: 1 / span 3; }
+    .cols { grid-column: 5 / span 5; }
+    .cities, .copy { grid-column: 1 / -1; }
+  }
+</style>

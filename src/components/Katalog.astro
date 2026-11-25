@@ -1,0 +1,50 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { categories, soon } from "../data/site";
+---
+<section id="katalog" data-rec="R-002" class="katalog">
+  <div class="container grid">
+    <div class="head">
+      <h2>Шукаєте інше? Увесь каталог</h2>
+      <p>Крім трьох лінійок — моносорти, купажі, кава з бочки та без кофеїну.</p>
+    </div>
+    <ul class="index">
+      {categories.map((c) => (
+        <li><FutureLink note={soon} class="row">{c}</FutureLink></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .katalog { padding-block: var(--s-6) var(--s-7); }
+  .grid { display: grid; gap: var(--s-5); }
+  .head { display: grid; gap: var(--s-3); align-content: start; }
+  .head p { color: var(--muted); font-size: var(--fs-lead); }
+  .index { border-top: 2px solid var(--ink); }
+  li { border-bottom: 1px solid var(--muted); }
+  .index :global(.row) {
+    position: relative; display: flex; width: 100%; min-height: 56px; padding-block: var(--s-3);
+    font-family: var(--font-display); font-weight: 400; font-size: var(--fs-index); line-height: 1.1;
+    color: var(--ink); text-decoration: none;
+  }
+  /* Motion 4: on hover the row turns link-colour and a line draws under it (transform only). */
+  .index :global(.row)::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--link);
+    transform: scaleX(0); transform-origin: left; transition: transform var(--t-mid) var(--ease-out);
+  }
+  .index :global(.row:hover), .index :global(.row:focus-visible) { color: var(--link); }
+  .index :global(.row:hover)::after, .index :global(.row:focus-visible)::after { transform: scaleX(1); }
+  .index :global(.row .future-link__note) { left: auto; right: 0; top: 50%; transform: translate(0, -50%); }
+  .index :global(.row:hover .future-link__note), .index :global(.row:focus-visible .future-link__note) { transform: translate(0, -50%); }
+
+  @media (min-width: 1024px) {
+    .katalog { padding-block: var(--s-7) var(--s-8); }
+    .grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
+    .head { grid-column: 1 / span 4; position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+    .index { grid-column: 6 / span 7; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .index :global(.row)::after { transition: none; }
+  }
+</style>

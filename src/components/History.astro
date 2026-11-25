@@ -1,0 +1,50 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { Picture } from "astro:assets";
+import { heroes, history, soon } from "../data/site";
+---
+<section id="istoriia" data-rec="R-007" class="story on-well">
+  <div class="container">
+    <h2>Від бариста до власного цеху</h2>
+    <ol class="years">
+      {history.map((h) => (
+        <li><span class="year display num">{h.year}</span><p>{h.text}</p></li>
+      ))}
+    </ol>
+    <div class="after">
+      <div class="cast" aria-hidden="true">
+        {heroes.map((h) => <Picture src={h.img} alt="" formats={["avif", "webp"]} fallbackFormat="webp" widths={[96, 192]} sizes="96px" loading="lazy" />)}
+      </div>
+      <p>Персонажі пачок — обличчя нашої торгової марки Coffee-Story.</p>
+      <FutureLink note={soon}>Про нас</FutureLink>
+    </div>
+  </div>
+</section>
+
+<style>
+  .story { padding-block: var(--s-6); }
+  h2 { margin-bottom: var(--s-5); }
+  .years { display: grid; border-top: 2px solid var(--ink); }
+  li { display: grid; gap: var(--s-1); padding-block: var(--s-4); border-bottom: 1px solid var(--muted); }
+  .year { font-size: var(--fs-index); line-height: 1; }
+  li p { font-size: var(--fs-lead); }
+  .after { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-4); margin-top: var(--s-5); }
+  .after :global(.future-link) { min-height: 44px; color: var(--link); }
+  .cast { display: flex; width: 100%; }
+  .cast :global(img) { width: 88px; height: auto; }
+  .cast :global(picture + picture) { margin-left: -16px; }
+  .cast :global(picture:nth-child(1)) { rotate: -6deg; }
+  .cast :global(picture:nth-child(3)) { rotate: 6deg; }
+  @media (min-width: 768px) { .cast { width: auto; } }
+
+  @media (min-width: 768px) {
+    li { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: baseline; padding-block: var(--s-5); }
+    .year { grid-column: 1 / span 3; }
+    li p { grid-column: 5 / span 8; }
+  }
+  @media (min-width: 1024px) {
+    .story { padding-block: var(--s-7) var(--s-8); }
+    h2 { margin-bottom: var(--s-6); }
+    .year { font-size: clamp(3rem, 2rem + 3vw, 4.5rem); }
+  }
+</style>

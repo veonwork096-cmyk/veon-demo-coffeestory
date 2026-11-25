@@ -1,0 +1,10 @@
+---
+// Inline stroke icons (currentColor). Decorative: always aria-hidden.
+interface Props { name: "phone" | "menu" | "close"; }
+const { name } = Astro.props;
+---
+<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {name === "phone" && <path d="M5 3.5h3.2l1.6 4.2-2 1.4a11 11 0 0 0 7.1 7.1l1.4-2 4.2 1.6V19a2 2 0 0 1-2 2A17 17 0 0 1 3 5.5a2 2 0 0 1 2-2Z" />}
+  {name === "menu" && <path d="M4 7h16M4 12h16M4 17h16" />}
+  {name === "close" && <path d="M6 6l12 12M18 6 6 18" />}
+</svg>

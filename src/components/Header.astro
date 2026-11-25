@@ -1,0 +1,106 @@
+---
+import { Image } from "astro:assets";
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import logo from "../assets/logo.png";
+import { contacts, soon } from "../data/site";
+
+const anchors = [
+  { href: "#obsmazhennia", label: "Свіжість" },
+  { href: "#istoriia", label: "Про нас" },
+  { href: "#dostavka", label: "Доставка" },
+  { href: "#kontakty", label: "Контакти" },
+];
+---
+<header class="site-header" data-rec="R-009">
+  <div class="bar container">
+    <details class="menu" data-menu>
+      <summary class="icon-btn" aria-label="Меню">
+        <span class="i-open"><Icon name="menu" /></span>
+        <span class="i-close"><Icon name="close" /></span>
+      </summary>
+      <div class="menu-panel on-field">
+        <nav aria-label="Меню" class="menu-nav">
+          <FutureLink note={soon}>Каталог кави</FutureLink>
+          {anchors.map((a) => <a href={a.href}>{a.label}</a>)}
+        </nav>
+        <div class="menu-foot">
+          <a class="menu-phone num" href={contacts.phoneHref}>{contacts.phone}</a>
+          <FutureLink note={soon}>RU</FutureLink>
+        </div>
+      </div>
+    </details>
+
+    <a class="logo" href="#top" aria-label="Coffee-Story — на початок сторінки">
+      <Image src={logo} alt="Coffee-Story" width={186} height={54} loading="eager" format="webp" densities={[1, 2]} />
+    </a>
+
+    <nav class="desk-nav" aria-label="Основне меню">
+      <FutureLink note={soon}>Каталог кави</FutureLink>
+      {anchors.map((a) => <a href={a.href}>{a.label}</a>)}
+    </nav>
+
+    <div class="desk-tools">
+      <a class="desk-phone num" href={contacts.phoneHref}>{contacts.phone}</a>
+      <FutureLink note={soon} class="lang">RU</FutureLink>
+    </div>
+
+    <a class="icon-btn call" href={contacts.phoneHref} aria-label={`Подзвонити: ${contacts.phone}`} data-rec="R-009">
+      <Icon name="phone" />
+    </a>
+  </div>
+</header>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: 1px solid var(--well); height: var(--header-h); }
+  .bar { height: 100%; display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; gap: var(--s-3); }
+  .logo { justify-self: center; display: block; }
+  .logo :global(img) { width: auto; height: 40px; }
+  .icon-btn { width: 44px; height: 44px; display: grid; place-items: center; border-radius: var(--radius-pill); color: var(--ink); cursor: pointer; list-style: none; }
+  .icon-btn::-webkit-details-marker { display: none; }
+  .icon-btn:hover { background: var(--well); }
+  .call { background: var(--accent); border: var(--border) solid var(--ink); }
+  .call:hover { background: var(--accent-hover); }
+  .call :global(svg) { width: 20px; height: 20px; }
+
+  .menu .i-close { display: none; }
+  .menu[open] .i-open { display: none; }
+  .menu[open] .i-close { display: block; }
+  .menu-panel { position: fixed; inset: var(--header-h) 0 0 0; padding: var(--s-5) var(--space) var(--s-5); display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto; }
+  .menu-nav { display: grid; gap: var(--s-1); }
+  .menu-nav > :global(*) { font-family: var(--font-display); font-weight: 400; font-size: 2rem; line-height: 1.15; color: var(--paper); text-decoration: none; padding-block: .375rem; width: fit-content; min-height: 44px; }
+  .menu-nav a:hover { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: .15em; }
+  .menu-foot { display: flex; justify-content: space-between; align-items: center; gap: var(--s-3); padding-top: var(--s-5); }
+  .menu-phone { white-space: nowrap; color: var(--paper); font-weight: 700; font-size: 1.25rem; min-height: 44px; display: inline-flex; align-items: center; }
+
+  .desk-nav, .desk-tools { display: none; }
+
+  @media (min-width: 1024px) {
+    .bar { grid-template-columns: auto 1fr auto; gap: var(--s-5); }
+    .menu, .call { display: none; }
+    .logo { justify-self: start; }
+    .desk-nav { display: flex; gap: var(--s-4); justify-self: center; }
+    .desk-nav > :global(*) { color: var(--ink); text-decoration: none; font-weight: 600; font-size: var(--fs-small); min-height: 44px; display: inline-flex; align-items: center; }
+    .desk-nav a:hover { color: var(--link); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .3em; }
+    .desk-tools { display: flex; align-items: center; gap: var(--s-4); }
+    .desk-phone { color: var(--ink); font-weight: 700; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; white-space: nowrap; }
+    .desk-phone:hover { color: var(--link); text-decoration: underline; text-underline-offset: .3em; }
+    .desk-tools :global(.lang) { font-size: var(--fs-small); }
+  }
+  @media (min-width: 1024px) and (max-width: 1180px) {
+    .desk-nav { gap: var(--s-3); }
+    .bar { gap: var(--s-3); }
+  }
+</style>
+
+<script>
+  // Close the mobile menu after a jump to a section, and on Escape.
+  const menu = document.querySelector<HTMLDetailsElement>("[data-menu]");
+  if (menu) {
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => { document.documentElement.style.overflow = ""; menu.open = false; }));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menu.open) { menu.open = false; menu.querySelector("summary")?.focus(); }
+    });
+    menu.addEventListener("toggle", () => { document.documentElement.style.overflow = menu.open ? "hidden" : ""; });
+  }
+</script>

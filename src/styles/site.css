@@ -1,0 +1,58 @@
+/* Coffee Story: shared typography, surfaces, buttons, links. Colours and fonts only through tokens. */
+html { scrollbar-color: var(--muted) var(--paper); }
+::selection { background: var(--accent); color: var(--ink); }
+body { font-size: var(--fs-body); line-height: 1.6; font-feature-settings: "kern"; }
+h1, h2, h3, h4 { margin: 0; }
+h1, h2, .display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+h1 { font-size: var(--fs-h1); line-height: 1.02; }
+h2 { font-size: var(--fs-h2); line-height: 1.05; }
+h3 { font-family: var(--font-body); font-weight: 700; font-size: var(--fs-h3); line-height: 1.2; }
+p { margin: 0; max-width: 65ch; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+.price, .num { font-variant-numeric: tabular-nums lining-nums; }
+
+.container { width: min(100% - 2 * var(--space), var(--container)); margin-inline: auto; }
+
+/* Surfaces */
+.on-field { background: var(--field); color: var(--paper); --focus: var(--paper); --muted-on: var(--well); }
+.on-ink { background: var(--ink); color: var(--paper); --focus: var(--paper); --muted-on: var(--well); }
+.on-well { background: var(--well); color: var(--ink); }
+
+/* Links */
+.link { color: var(--link); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .2em; font-weight: 700; }
+.link:hover { text-decoration-thickness: 3px; color: var(--ink); }
+.on-field .link, .on-ink .link { color: var(--paper); }
+.on-field .link:hover, .on-ink .link:hover { color: var(--well); }
+
+/* Primary button: orange, ink outline like the pack drawings */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 48px; padding: .625rem 1.5rem;
+  background: var(--accent); color: var(--ink);
+  border: var(--border) solid var(--ink); border-radius: var(--radius-pill);
+  font: 700 1.0625rem/1.2 var(--font-body); text-decoration: none; cursor: pointer;
+  transition: transform var(--t-fast) var(--ease-out);
+}
+.btn:hover { background: var(--accent-hover); }
+.btn.future-link { color: var(--ink); text-decoration: none; }
+.btn:active { transform: translateY(1px); }
+.btn svg { width: 1.125rem; height: 1.125rem; flex: none; }
+
+/* FutureLink: looks like an ordinary link of the design, inactive */
+.future-link { color: inherit; font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .2em; text-decoration-color: color-mix(in oklab, currentColor 45%, transparent); }
+.future-link:hover { text-decoration-color: currentColor; }
+.future-link__note[aria-hidden="true"] { background: var(--ink); color: var(--paper); font-weight: 600; text-decoration: none; }
+.on-ink .future-link__note[aria-hidden="true"], .on-field .future-link__note[aria-hidden="true"] { background: var(--paper); color: var(--ink); }
+
+/* Section rhythm (varied on purpose) */
+.section-head { display: grid; gap: var(--s-3); margin-bottom: var(--s-5); }
+.section-head p { color: var(--muted); font-size: var(--fs-lead); }
+.on-field .section-head p, .on-ink .section-head p { color: var(--muted-on); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:active { transform: none; }
+}
+
+/* Disabled / unavailable states (FutureLink is aria-disabled by design of the demo base) */
+:disabled, [aria-disabled="true"] { cursor: default; }
+button:disabled { opacity: .55; }

@@ -1,0 +1,55 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Facts from "../components/Facts.astro";
+import Heroes from "../components/Heroes.astro";
+import Katalog from "../components/Katalog.astro";
+import Freshness from "../components/Freshness.astro";
+import History from "../components/History.astro";
+import Delivery from "../components/Delivery.astro";
+import Contacts from "../components/Contacts.astro";
+import Footer from "../components/Footer.astro";
+import { getImage } from "astro:assets";
+import sumatra from "../assets/packs/sumatra.png";
+import { contacts } from "../data/site";
+
+// LCP image of the first screen (Лис): preload the same AVIF set the <Picture> uses.
+const lcp = await getImage({ src: sumatra, format: "avif", widths: [320, 640, 960] });
+
+const title = "Кава власного обсмаження, доставка по Україні — Coffee-Story";
+const description = "Кава в зернах власного обсмаження з цеху в Дніпрі: еспресо, фільтр, авторські лоти від шефа. Доставка Новою поштою по Україні, кур'єр по Дніпру.";
+
+// Organization + Store, WebSite (concept.md «SEO головної»). No openingHours until R-004; no url until the domain is decided.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "Store"],
+      "@id": "#store",
+      name: "Coffee-Story",
+      description,
+      telephone: "+380684827286",
+      email: contacts.email,
+      address: { "@type": "PostalAddress", streetAddress: contacts.address, addressLocality: contacts.city, addressCountry: "UA" },
+      areaServed: "UA",
+      sameAs: [contacts.facebook, contacts.instagram],
+    },
+    { "@type": "WebSite", name: "Coffee-Story", inLanguage: "uk", publisher: { "@id": "#store" } },
+  ],
+};
+---
+<Base lang="uk" title={title} description={description}>
+  <link slot="head" rel="preload" as="image" type="image/avif" imagesrcset={lcp.srcSet.attribute} imagesizes="(min-width: 1024px) 444px, 46vw" fetchpriority="high" />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <Header slot="header" />
+  <Hero />
+  <Facts />
+  <Heroes />
+  <Katalog />
+  <Freshness />
+  <History />
+  <Delivery />
+  <Contacts />
+  <Footer slot="footer" />
+</Base>

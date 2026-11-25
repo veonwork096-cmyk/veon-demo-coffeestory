@@ -1,0 +1,27 @@
+---
+const facts = [
+  { t: "Нова пошта", d: "замовили до 17:00 — відправимо наступного робочого дня" },
+  { t: "Кур'єр по Дніпру", d: "замовили до 11:00 — привеземо того ж дня" },
+  { t: "Самовивіз", d: "з цеху обсмаження в Дніпрі, за попереднім замовленням" },
+];
+---
+<section id="fakty" class="facts on-well" aria-label="Доставка коротко">
+  <ul class="container">
+    {facts.map((f) => <li><strong>{f.t}</strong> <span>{f.d}</span></li>)}
+  </ul>
+</section>
+
+<style>
+  .facts { position: relative; z-index: 0; padding-top: calc(64px + var(--s-5)); padding-bottom: var(--s-5); }
+  ul { display: grid; gap: var(--s-4); }
+  li { display: grid; gap: .25rem; max-width: 36ch; }
+  strong { font-size: 1.125rem; }
+  span { color: var(--muted); }
+  @media (min-width: 768px) {
+    ul { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--s-5); }
+    li { border-left: 2px solid var(--ink); padding-left: var(--s-3); }
+  }
+  @media (min-width: 1024px) {
+    .facts { padding-top: calc(48px + var(--s-5)); }
+  }
+</style>

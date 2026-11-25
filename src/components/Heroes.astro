@@ -1,0 +1,167 @@
+---
+import { Picture } from "astro:assets";
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { contacts, heroes, soon } from "../data/site";
+---
+<section id="heroi" data-rec="R-002,R-003,R-009" class="heroes">
+  <div class="container">
+    <div class="section-head">
+      <h2>Три герої — три способи заварювання</h2>
+      <p>Персонаж на пачці — це лінійка: «еспресо», «від шефа» чи «під фільтр». Ціна — за пачку 250 г у зернах.</p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Лінійки кави" data-tabs>
+      {heroes.map((h, i) => (
+        <button class="tab" role="tab" type="button" id={`tab-${h.id}`} aria-controls={`heroi-${h.id}`} aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1} data-tab={h.id}>
+          <Picture src={h.img} alt="" formats={["avif", "webp"]} fallbackFormat="webp" widths={[88, 176]} sizes="88px" loading="lazy" />
+          <span class="tab-name">{h.name}</span>
+          <span class="tab-line">{h.line}</span>
+        </button>
+      ))}
+    </div>
+
+    {heroes.map((h, i) => (
+      <div class:list={["panel", h.tone === "ink" ? "on-ink" : "on-field"]} id={`heroi-${h.id}`} role="tabpanel" aria-labelledby={`tab-${h.id}`} data-panel={h.id} data-active={i === 0 ? "" : undefined}>
+        <div class="panel-pack">
+          <Picture src={h.img} alt={h.alt} formats={["avif", "webp"]} fallbackFormat="webp" widths={[320, 480, 720, 960]} sizes="(min-width: 1024px) 480px, (min-width: 600px) 320px, 240px" loading="lazy" />
+        </div>
+        <div class="panel-body">
+          <h3>{h.name}</h3>
+          <p class="h-line">Лінійка «{h.line}»</p>
+          <ul class="coffees">
+            {h.coffees.map((c) => (
+              <li class="coffee">
+                <h4>{c.name}</h4>
+                {c.notes && <p class="notes">{c.notes}</p>}
+                <p class="buy"><span class="weight">250 г</span> <span class="price">{c.price} грн</span></p>
+                <FutureLink note={soon} class="more">Детальніше<span class="visually-hidden"> про каву {c.name}</span></FutureLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    ))}
+
+    <div class="advice">
+      <p>Не знаєте, яку обрати? Підкажемо за смаком і способом заварювання.</p>
+      <a class="btn" href={contacts.phoneHref}><Icon name="phone" />Порадимо по телефону</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .heroes { padding-block: var(--s-7) var(--s-6); }
+  .tabs { display: none; }
+  :global(.js) .tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); margin-bottom: var(--s-4); }
+  .tab {
+    display: grid; justify-items: center; gap: .125rem; padding: var(--s-2) var(--s-1) var(--s-3);
+    background: transparent; color: var(--ink); border: var(--border) solid var(--well); border-radius: var(--radius);
+    font: inherit; cursor: pointer; min-height: 44px;
+  }
+  .tab :global(img) { width: 88px; height: auto; margin-bottom: var(--s-1); }
+  .tab-name { font-weight: 700; font-size: 1.125rem; }
+  .tab-line { font-size: var(--fs-small); color: var(--muted); }
+  .tab:hover { border-color: var(--muted); }
+  .tab[aria-selected="true"] { border-color: var(--ink); background: var(--accent); }
+  .tab[aria-selected="true"] .tab-line { color: var(--ink); }
+
+  .panel { border-radius: var(--radius); padding: var(--s-4) var(--s-3); display: grid; gap: var(--s-4); margin-bottom: var(--s-3); }
+  :global(.js) .panel:not([data-active]) { display: none; }
+  .panel-pack { justify-self: center; width: min(240px, 70%); }
+  .panel-pack :global(img) { width: 100%; height: auto; }
+  h3 { font-size: var(--fs-h3); }
+  .h-line { color: var(--muted-on); margin-bottom: var(--s-2); }
+  .coffees { display: grid; }
+  .coffee { display: grid; gap: .375rem; padding-block: var(--s-4); border-top: 1px solid color-mix(in oklab, var(--paper) 30%, transparent); }
+  .coffee:last-child { padding-bottom: 0; }
+  h4 { font: 700 1.25rem/1.25 var(--font-body); }
+  .notes { color: var(--muted-on); font-size: var(--fs-small); }
+  .buy { display: flex; align-items: baseline; gap: var(--s-3); }
+  .weight { color: var(--muted-on); }
+  .price { font-weight: 700; font-size: 1.375rem; }
+  .coffee :global(.more) { justify-self: start; min-height: 44px; }
+
+  .advice { display: grid; gap: var(--s-3); justify-items: start; margin-top: var(--s-5); }
+  .advice p { font-size: var(--fs-lead); }
+
+  @media (min-width: 600px) {
+    .panel { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: start; padding: var(--s-5); }
+    .panel-pack { width: 100%; position: sticky; top: calc(var(--header-h) + var(--s-4)); }
+    .advice { grid-auto-flow: column; justify-content: start; align-items: center; gap: var(--s-5); }
+  }
+  @media (min-width: 1024px) {
+    .heroes { padding-block: var(--s-8) var(--s-7); }
+    :global(.js) .tabs { grid-template-columns: repeat(3, minmax(0, 236px)); gap: var(--s-3); }
+    .tab { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; justify-items: start; align-content: center; column-gap: var(--s-3); text-align: left; padding: var(--s-2) var(--s-3); }
+    .tab :global(picture) { grid-row: 1 / span 2; }
+    .tab :global(img) { width: 64px; margin: 0; }
+    .tab-name { align-self: end; }
+    .tab-line { align-self: start; }
+    .panel { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); padding: var(--s-6) var(--s-5); }
+    .panel-pack { grid-column: 1 / span 5; }
+    .panel-body { grid-column: 7 / span 6; }
+    h3 { font-size: 1.75rem; margin-bottom: var(--s-2); }
+  }
+
+  /* Motion 2: switching heroes — the pack slides 12px and fades in, the list only fades. */
+  @keyframes pack-in { from { opacity: 0; translate: 12px 0; } }
+  @keyframes list-in { from { opacity: 0; } }
+  .panel[data-anim] .panel-pack :global(picture) { display: block; animation: pack-in var(--t-tab) var(--ease-out) both; }
+  .panel[data-anim] .panel-body { animation: list-in var(--t-tab) var(--ease-out) both; }
+  @media (prefers-reduced-motion: reduce) {
+    .panel[data-anim] .panel-pack :global(picture), .panel[data-anim] .panel-body { animation: none; }
+  }
+</style>
+
+<script>
+  // Tabs (ARIA tablist): click, arrow keys, Home/End; links #heroi-<id> from the first screen open their hero.
+  const list = document.querySelector<HTMLElement>("[data-tabs]");
+  if (list) {
+    const tabs = Array.from(list.querySelectorAll<HTMLButtonElement>("[data-tab]"));
+    const panels = Array.from(document.querySelectorAll<HTMLElement>("[data-panel]"));
+    const select = (id: string, focus = false, animate = true) => {
+      tabs.forEach((t) => {
+        const on = t.dataset.tab === id;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      panels.forEach((p) => {
+        const on = p.dataset.panel === id;
+        p.toggleAttribute("data-active", on);
+        p.removeAttribute("data-anim");
+        if (on && animate) { void p.offsetWidth; p.setAttribute("data-anim", ""); }
+      });
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener("click", () => select(t.dataset.tab!));
+      t.addEventListener("keydown", (e) => {
+        let n = -1;
+        if (e.key === "ArrowRight") n = (i + 1) % tabs.length;
+        else if (e.key === "ArrowLeft") n = (i - 1 + tabs.length) % tabs.length;
+        else if (e.key === "Home") n = 0;
+        else if (e.key === "End") n = tabs.length - 1;
+        if (n >= 0) { e.preventDefault(); select(tabs[n].dataset.tab!, true); }
+      });
+    });
+    const fromHash = (hash: string) => {
+      const m = /^#heroi-(\w+)$/.exec(hash);
+      return m && tabs.some((t) => t.dataset.tab === m[1]) ? m[1] : null;
+    };
+    document.querySelectorAll<HTMLAnchorElement>('a[href^="#heroi-"]').forEach((a) => {
+      a.addEventListener("click", (e) => {
+        const id = fromHash(a.getAttribute("href") || "");
+        if (!id) return;
+        e.preventDefault();
+        select(id, false, false);
+        history.replaceState(null, "", `#heroi-${id}`);
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        document.getElementById("heroi")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+        list.querySelector<HTMLButtonElement>(`[data-tab="${id}"]`)?.focus({ preventScroll: true });
+      });
+    });
+    const initial = fromHash(location.hash);
+    if (initial) { select(initial, false, false); document.getElementById("heroi")?.scrollIntoView(); }
+  }
+</script>
